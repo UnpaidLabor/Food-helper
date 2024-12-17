@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<script>
+// รายการอาหารพร้อมหมวดหมู่
+const foods = [
+  { name: "ข้าวผัด", description: "หวานและเปรี้ยว ข้าวผัดกับไข่และผัก", categories: ["หวาน", "คาว"] },
+  { name: "ผัดไทย", description: "หวาน เส้นผัดกับไข่, เต้าหู้, และถั่วงอก", categories: ["หวาน"] },
+  { name: "ต้มยำกุ้ง", description: "หวาน เปรี้ยว และเผ็ด กุ้งแน่นๆพร้อมน้ำต้มยำน้ำข้นพร้อม (ร้านครัวริมคลอง)", categories: ["หวาน", "เปรี้ยว", "เผ็ด"] },
+  { name: "ส้มตำ", description: "เผ็ดแลเปรี้ยว ส้มตำไทยรสจัด", categories: ["เผ็ด", "เปรี้ยว"] },
+  { name: "แกงเขียวหวาน", description: "หวานและเผ็ด แกงกะทิกับเนื้อไก่หรือเนื้อปลา", categories: ["หวาน", "เผ็ด"] }, 
+  { name: "ข้าวซอย", description: "เค็ม เผ็ดและเปรี้ยว เส้นข้าวซอยไก่หรือเนื้อหมูพร้อมผักชีพริกแห้งทอด (ร้านครัวริมคลอง)", categories: ["เค็ม", "เผ็ด", "เปรี้ยว"] },
+  { name: "ก๋วยเตี๋ยวเรือ", description: "หวานและเผ็ด เส้นก๋วยเตี๋ยวเนื้อหมูพร้อมน้ำซุปซดร้อนๆ พร้อมกระเทียมเจียวและเครื่องปรุง (ร้านก๋วยเตี๋ยวเรือคุณยาย และร้านครัวริมคลอง)", categories: ["หวาน", "เผ็ด"] },
+  { name: "ข้าวมันไก่", description: "หวาน เผ็ดและคาว ไก่เนื้อนุ่มพร้อมน้ำจิ้มสูตรพิเศษของร้านมาพร้อมกับน้ำซุปไก่สดร้อนๆ (ร้านอาหารแป๊ะซะ)", categories: ["หวาน", "เผ็ด", "คาว"] },
+  { name: "ขนมจีน", description: "หวานและเผ็ด เส้นขนมจีนพร้อมน้ำยาที่มีให้เลือกสรรมากมาย (ร้านอาหารแป๊ะซะ)", categories: ["หวาน", "เผ็ด"] },
+  { name: "ข้าวขาหมู", description: "หวาน และคาว เส้นก๋วยเตี๋ยวเนื้อหมูพร้อมน้ำซุปซดร้อนๆ พร้อมกระเทียมเจียวและเครื่องปรุง (ร้านอาหารแป๊ะซะ)", categories: ["หวาน", "คาว"] },
+  { name: "ผัดกระเพรา", description: "เผ็ด และคาว ข้าวสวยร้อนๆ พร้อมเนื้อหมูสับหรือไก่สับมีให้เลือกสรรตามความชอบพร้อมไข่ดาว (ร้านอาหารแป๊ะซะ)", categories: ["เผ็ด", "คาว"] }
+];
+
+// ฟังก์ชันแสดงผลรายการอาหาร
+function displayFood(filteredFoods) {
+  const foodList = document.getElementById("food-list");
+  foodList.innerHTML = ""; // ล้างรายการก่อน
+  filteredFoods.forEach(food => {
+    const li = document.createElement("li");
+    li.textContent = `${food.name}: ${food.description}`;
+    foodList.appendChild(li);
+  });
+}
+
+// ฟังก์ชันกรองอาหาร
+function filterFood() {
+  const searchTerm = document.getElementById("search-bar").value.toLowerCase();
+  
+  // เช็คค่าของเช็คบ็อกซ์
+  const isSpicy = document.getElementById("filter-spicy").checked;
+  const isSweet = document.getElementById("filter-sweet").checked;
+  const isSour = document.getElementById("filter-sour").checked;
+  const isFishy = document.getElementById("filter-fishy").checked;
+    const isSalty = document.getElementById("filter-salty").checked;
+    const isBitter = document.getElementById("filter-bitter").checked;
+
+
+
+  // กรองอาหารตามคำค้นหาและหมวดหมู่ที่เลือก
+  const filteredFoods = foods.filter(food => {
+    const matchesSearchTerm = food.name.toLowerCase().includes(searchTerm) || food.description.toLowerCase().includes(searchTerm);
+    
+    const matchesCategory = (
+      (isSpicy && food.categories.includes("เผ็ด")) ||
+      (isSweet && food.categories.includes("หวาน")) ||
+      (isSour && food.categories.includes("เปรี้ยว")) ||
+      (isFishy && food.categories.includes("คาว")) ||
+      (isSalty && food.categories.includes("เค็ม")) ||
+      (isBitter && food.categories.includes("ขม"))
+    );
+    
+    return matchesSearchTerm && matchesCategory;
+  });
+
+  displayFood(filteredFoods);
+}
+
+// เริ่มต้นการแสดงผลรายการอาหาร
+displayFood(foods);
+</script>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+#filters {
+  margin-bottom: 20px;
+}
+
+#filters label {
+  margin-right: 15px;
+}
+
+#search-bar {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+li:hover {
+  background-color: #f1f1f1;
+}
+</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เว็บหิวข้าวจัง กินอะไรดีกำแพงเพชร</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+  <div class="container">
+    <h1>เว็บหิวข้าวจัง กินอะไรดีกำแพงเพชร</h1>
+        <h2>วิธีใช้</h2>
+        <h3>1. กดเช็ครสชาติที่อยากจะรับประทาน</h3>
+        <h4>2.เขียนส่วนผสมของอาหารที่อยากทาน เช่น ข้าว ไข่ ปลา</h4>
+    <div id="filters">
+      <label>
+        <input type="checkbox" id="filter-spicy" onclick="filterFood()"> เผ็ด
+      </label>
+      <label>
+        <input type="checkbox" id="filter-sweet" onclick="filterFood()"> หวาน
+      </label>
+      <label>
+        <input type="checkbox" id="filter-sour" onclick="filterFood()"> เปรี้ยว
+      </label>
+            <label>
+        <input type="checkbox" id="filter-fishy" onclick="filterFood()"> คาว
+      </label>
+            <label>
+        <input type="checkbox" id="filter-salty" onclick="filterFood()"> เค็ม
+      </label>
+            <label>
+        <input type="checkbox" id="filter-bitter" onclick="filterFood()"> ขม
+      </label>
+    </div>
+
+    <input type="text" id="search-bar" placeholder="ค้นหาอาหาร..." onkeyup="filterFood()">
+    
+    <ul id="food-list">
+      <!-- รายการอาหารจะถูกแสดงที่นี่ -->
+    </ul>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
