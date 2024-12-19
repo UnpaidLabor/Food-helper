@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เว็บหิวข้าวจัง กินอะไรดีกำแพงเพชร</title>
+
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 50px auto;
+      padding: 25px;
+      background-color: #fff;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      border-top: 8px solid #FFB74D;
+    }
+
+    h1 {
+      text-align: center;
+      color: #FFB74D;
+      font-size: 3em;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 1.5em;
+      margin-bottom: 10px;
+      color: #666;
+    }
+
+    h3, h4 {
+      font-size: 1.2em;
+      margin-bottom: 10px;
+      color: #555;
+    }
+
+    #filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+
+    #filters label {
+      font-size: 1.1em;
+      color: #555;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    #filters input {
+      margin-right: 8px;
+    }
+
+    #filters label:hover {
+      transform: scale(1.1);
+    }
+
+    #search-bar {
+      width: 100%;
+      padding: 12px 18px;
+      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+
+    #search-bar:focus {
+      border-color: #FFB74D;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    li {
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    li:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    li a {
+      color: #333;
+      font-weight: bold;
+      font-size: 1.1em;
+      text-decoration: none;
+      display: block;
+      transition: color 0.3s ease;
+    }
+
+    li a:hover {
+      color: #FFB74D;
+    }
+
+    li img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      transition: transform 0.3s ease;
+    }
+
+    li img:hover {
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.5em;
+      }
+
+      h2 {
+        font-size: 1.2em;
+      }
+
+      #filters label {
+        font-size: 1em;
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #FFB74D;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #FFA000;
+    }
+  </style>
+
+  <script>
+    const foods = [
+    { name: "ข้าวผัด", description: "หวานและเปรี้ยว ข้าวผัดกับไข่และผัก", categories: ["หวาน", "คาว", "อาหารจานเดียว", "ผัด"], image: "https://bing.com/th?id=OSK.0f7dcb40771cd58c17db14d22abe91ea", url: "https://www.wongnai.com/businesses?q=ข้าวผัด&cregion=1364" },
+    { name: "ผัดไทย", description: "หวาน เส้นผัดกับไข่, เต้าหู้, และถั่วงอก", categories: ["หวาน", "อาหารจานเดียว", "ผัด", "เส้น"], image: "https://th.bing.com/th/id/OIP.GkGFqzAVKbSGAvtKHoHP0wHaEK?rs=1&pid=ImgDetMain", url: "https://www.wongnai.com/businesses?q=ผัดไทย&cregion=1364" },
+    { name: "ต้มยำกุ้ง", description: "หวาน เปรี้ยว และเผ็ด กุ้งแน่นๆพร้อมน้ำต้มยำน้ำข้นพร้อม (ร้านครัวริมคลอง)", categories: ["หวาน", "เปรี้ยว", "เผ็ด"], image: "https://th.bing.com/th/id/R.281e10312d812cdf403d9415e790fe22?rik=sYvIjocQ6aXDXw&riu=http%3a%2f%2f4.bp.blogspot.com%2f-pPuHYww9J-s%2fVE49cVxb3aI%2fAAAAAAAAAu0%2fdp0GOyCss-M%2fs1600%2fSa-Mun-Pai-4_0.jpg&ehk=VtZsLoBXcPhtEbKzfl905YKJpxQ1WHW2cqFDtmVqIVY%3d&risl=&pid=ImgRaw&r=0", url: "https://www.wongnai.com/businesses?q=ต้มยำกุ้ง&cregion=1364" },
+    { name: "ส้มตำ", description: "เผ็ดแลเปรี้ยว ส้มตำไทยรสจัด", categories: ["เผ็ด", "เปรี้ยว", "กับข้าว"], image: "https://th.bing.com/th/id/OIP.kV8WemeKlpHF5gnkDPxaiQHaFa?rs=1&pid=ImgDetMain", url: "https://www.wongnai.com/businesses?q=ส้มตำ&cregion=1364" },
+    { name: "แกงเขียวหวาน", description: "หวานและเผ็ด แกงกะทิกับเนื้อไก่หรือเนื้อปลา", categories: ["หวาน", "เผ็ด", "กับข้าว"], image: "https://th.bing.com/th/id/OIP.zdCctyXbxKUkwRqoFqaacwHaHa?w=178&h=180&c=7&r=0&o=5&dpr=1.1&pid=1.7", url: "https://www.wongnai.com/businesses?q=แกงเขียวหวาน&cregion=1364" },
+    { name: "ก๋วยเตี๋ยวเรือ", description: "หวานและเผ็ด เส้นก๋วยเตี๋ยวเนื้อหมูพร้อมน้ำซุปซดร้อนๆ พร้อมกระเทียมเจียวและเครื่องปรุง (ร้านก๋วยเตี๋ยวเรือคุณยาย และร้านครัวริมคลอง)", categories: ["หวาน", "เผ็ด", "เส้น"], image: "https://th.bing.com/th/id/OIP.jJHaiqq42bfF1bff8zKHIQHaFa?rs=1&pid=ImgDetMain", url: "https://www.wongnai.com/restaurants/260593Kb-ก๋วยเตี๋ยวยูเทิร์น-กำแพงเพชร?_st=cD0xO2I9MjYwNTkzO2FkPWZhbHNlO3Q9MTczNDYxOTE5MDEyMTtyaT0xWDdiQU9qaVVIN1dDUnBiOERURXpBZEJlT1JoV0c7aT0xWDcwZGlWSW15WDFZV2VpT0tpRXNVVjU5VEt2MDQ7d3JlZj1zcjs%3D" },
+    { name: "ข้าวมันไก่", description: "หวาน เผ็ดและคาว ไก่เนื้อนุ่มพร้อมน้ำจิ้มสูตรพิเศษของร้านมาพร้อมกับน้ำซุปไก่สดร้อนๆ (ร้านอาหารแป๊ะซะ)", categories: ["หวาน", "เผ็ด", "คาว", "อาหารจานเดียว"], image: "https://th.bing.com/th/id/OIP.FR6Q1pDI4fcC9Q4vsvQkMgHaFa?rs=1&pid=ImgDetMain", url: "https://www.wongnai.com/businesses?q=ข้าวมันไก่&cregion=1364" },
+    { "name": "ขนมจีนน้ำยาปู", "description": "ขนมจีนเสิร์ฟกับน้ำยาปูรสชาติเผ็ดและมัน", "image": "https://i.pinimg.com/originals/97/73/bd/9773bd057623787a076db5d7caa8170b.jpg", "url": "https://www.wongnai.com/businesses?q=ขนมจีนน้ำยาปู&cregion=1364", "categories": ["เผ็ด", "อาหารจานเดียว"] },
+    { "name": "ข้าวคลุกกะปิ", "description": "ข้าวคลุกกะปิหวานเค็ม เสิร์ฟพร้อมหมูหวาน ผักสด และไข่เจียว", "image": "https://www.willflyforfood.net/wp-content/uploads/2013/02/frsp3.jpg", "url": "https://www.wongnai.com/businesses?q=ข้าวคลุกกะปิ&cregion=1364", "categories": ["หวาน", "เค็ม", "คาว", "เปรี้ยว", "เผ็ด", "อาหารจานเดียว"] },
+    { "name": "หมูปิ้งกำแพงเพชร", "description": "หมูปิ้งหวานมัน ปิ้งจนกรอบนอกนุ่มใน", "image": "https://images.deliveryhero.io/image/fd-th/LH/rd2i-hero.jpg", "url": "https://www.wongnai.com/businesses?q=หมูปิ้งกำแพงเพชร&cregion=1364", "categories": ["คาว", "เค็ม", "กับข้าว"] },
+    { "name": "แหนมเนือง", "description": "แหนมเนืองรสชาติเผ็ดร้อน เสิร์ฟพร้อมผักสดและข้าวเหนียว", "image": "https://th.bing.com/th/id/OIP.OkY8Z1UX6fcZKcJvZI5DzQHaEK?w=1600&h=900&rs=1&pid=ImgDetMain", "url": "https://www.wongnai.com/businesses?q=แหนมเนือง&cregion=1364", "categories": ["เปรี้ยว", "กับข้าว"] },
+    { "name": "ข้าวต้มหมู", "description": "ข้าวต้มร้อนๆ ทานคู่กับหมูสับและซุปกระดูกหมู", "image": "https://images.deliveryhero.io/image/fd-th/LH/az2n-hero.jpg", "url": "https://www.wongnai.com/businesses?q=ข้าวต้มหมู&cregion=1364", "categories": ["อาหารจานเดียว"] },
+    { "name": "ข้าวห่อใบบัว", "description": "ข้าวห่อใบบัวรสชาติหอมกรุ่น เสิร์ฟพร้อมกับเครื่องเคียงต่างๆ", "image": "https://shellshuanshim.com/webimages/rungsriroj/11-blog-img/175-rungsriroj-blog-img_01.jpg?Status=Master&sfvrsn=130db04f_2", "url": "https://www.wongnai.com/businesses?q=ข้าวห่อใบบัว&cregion=1364", "categories": ["หวาน", "อาหารจานเดียว"] },
+    { "name": "ขนมจีนน้ำยาปลาย่าง", "description": "ขนมจีนเสิร์ฟกับน้ำยาปลาย่าง รสชาติกลมกล่อมและหอม", "image": "https://th.bing.com/th/id/OIP.x6blTIoJmq8TfXjGyhtG1QHaHa?rs=1&pid=ImgDetMain", "url": "https://www.wongnai.com/businesses?q=ขนมจีนน้ำยาปลาย่าง&cregion=1364", "categories": ["หวาน", "เผ็ด", "อาหารจานเดียว"] },
+    { "name": "แกงไตปลา", "description": "แกงไตปลารสจัดจ้าน ใส่สมุนไพรไทยและผักพื้นบ้าน", "image": "https://th.bing.com/th/id/OIP.mAtJ7nU3nfm1yzDcZtHanAHaEK?rs=1&pid=ImgDetMain", "url": "https://www.wongnai.com/businesses?q=แกงไตปลา&cregion=1364", "categories": ["เผ็ด", "กับข้าว"] },
+    { "name": "แกงส้มปลากระบอก", "description": "แกงส้มรสเปรี้ยวเผ็ด มีปลากระบอกและผักสด", "image": "https://th.bing.com/th/id/OIP.BG3ALaDXbRM64VcKAOeSuAHaEK?rs=1&pid=ImgDetMain", "url": "https://www.wongnai.com/businesses?q=แกงส้มปลากระบอก&cregion=1364", "categories": ["เผ็ด", "เปรี้ยว", "กับข้าว"] },
+    { "name": "ข้าวผัดกุ้ง", "description": "ข้าวผัดกุ้งรสชาติกลมกล่อม เสิร์ฟพร้อมผักสด", "image": "https://img.wongnai.com/p/1920x0/2018/02/14/37bc85acae8640ae89e5e7e323bb2743.jpg", "url": "https://www.wongnai.com/businesses?q=ข้าวผัดกุ้ง&cregion=1364", "categories": ["อาหารจานเดียว", "ผัด"] },
+    { "name": "ข้าวผัดไก่", "description": "ข้าวผัดไก่รสชาติเข้มข้น เสิร์ฟพร้อมไข่และผัก", "image": "https://th.bing.com/th/id/OIP.rjmNdUnviCsBInoddGBwWAHaDS?rs=1&pid=ImgDetMain", "url": "https://www.wongnai.com/businesses?q=ข้าวผัดไก่&cregion=1364", "categories": ["อาหารจานเดียว", "เค็ม", "ผัด"] },
+    { "name": "ก๋วยเตี๋ยวหมูน้ำตก", "description": "ก๋วยเตี๋ยวหมูน้ำตกเสิร์ฟพร้อมน้ำซุปหอมๆ และหมูตุ๋น", "image": "https://th.bing.com/th/id/OIP.f31uUVnfqH0ITA2mKkdKfwHaFj?rs=1&pid=ImgDetMain", "url": "https://www.wongnai.com/businesses?q=ก๋วยเตี๋ยวหมูน้ำตก&cregion=1364", "categories": ["อาหารจานเดียว", "เค็ม", "เส้น"] },
+    { "name": "ก๋วยเตี๋ยวเส้นใหญ่", "description": "ก๋วยเตี๋ยวเส้นใหญ่รสชาติกลมกล่อม พร้อมเนื้อหมูหรือไก่", "image": "https://img.wongnai.com/p/1968x0/2017/11/06/c625fe58aa494daa9ea40a5895855ed3.jpg", "url": "https://www.wongnai.com/businesses?q=ก๋วยเตี๋ยวเส้นใหญ่&cregion=1364", "categories": ["อาหารจานเดียว", "เค็ม", "เส้น"] },
+    { "name": "ก๋วยเตี๋ยวต้มยำ", "description": "ก๋วยเตี๋ยวต้มยำรสเผ็ดร้อน ซุปเปรี้ยวแซ่บ", "image": "https://th.bing.com/th/id/R.22c816f4b938cb71e6819e69b4256fe6?rik=NVAuT1g%2bUvS8hQ&pid=ImgRaw&r=0", "url": "https://www.wongnai.com/businesses?q=ก๋วยเตี๋ยวต้มยำ&cregion=1364", "categories": ["อาหารจานเดียว", "เค็ม", "เส้น"] },
+    { "name": "ข้าวหมูแดง", "description": "ข้าวหมูแดงรสหวานมัน เสิร์ฟพร้อมน้ำซุปและไข่ต้ม", "image": "https://www.ryoiireview.com/upload/article/202106/1625057500_dca700e4b93ed987a6dd1e1cef84342e.jpg", "url": "https://www.wongnai.com/businesses?q=ข้าวหมูแดง&cregion=1364", "categories": ["หวาน", "อาหารจานเดียว"] },
+    { "name": "ข้าวหมูกรอบ", "description": "ข้าวหมูกรอบกรอบนอกนุ่มใน เสิร์ฟพร้อมน้ำจิ้ม", "image": "https://img.wongnai.com/p/1920x0/2023/05/17/d3c867e47ae94b129589468047dff17f.jpg", "url": "https://www.wongnai.com/businesses?q=ข้าวหมูกรอบ&cregion=1364", "categories": ["อาหารจานเดียว", "เค็ม", "คาว"] },
+    { "name": "ข้าวหน้าเป็ด", "description": "ข้าวหน้าเป็ดเนื้อนุ่มๆ เสิร์ฟพร้อมซอสหวาน", "image": "https://www.sgethai.com/wp-content/uploads/2022/10/221025-Content-%E0%B8%A7%E0%B8%B4%E0%B8%98%E0%B8%B5%E0%B8%97%E0%B8%B3-%E0%B8%82%E0%B9%89%E0%B8%B2%E0%B8%A7%E0%B8%AB%E0%B8%99%E0%B9%89%E0%B8%B2%E0%B9%80%E0%B8%9B%E0%B9%87%E0%B8%9402.jpg", "url": "https://www.wongnai.com/businesses?q=ข้าวหน้าเป็ด&cregion=1364", "categories": ["อาหารจานเดียว", "คาว"] },
+    { "name": "ข้าวหน้าไก่ทอด", "description": "ข้าวหน้าไก่ทอดกรอบ เสิร์ฟพร้อมน้ำจิ้มหวาน", "image": "https://www.tvpoolonline.com/wp-content/uploads/2018/05/maxresdefault-15.jpg", "url": "https://www.wongnai.com/businesses?q=ข้าวหน้าไก่ทอด&cregion=1364", "categories": ["อาหารจานเดียว", "เค็ม"] },
+    { "name": "ข้าวกระเพราหมูสับ", "description": "ข้าวกระเพราหมูสับรสเผ็ด เสิร์ฟพร้อมไข่ดาว", "image": "https://s.isanook.com/wo/0/ud/36/180929/3.jpg?ip/resize/w728/q80/jpg", "url": "https://www.wongnai.com/businesses?q=ข้าวกระเพราหมูสับ&cregion=1364", "categories": ["อาหารจานเดียว", "เผ็ด", "ผัด"] },
+    { "name": "ข้าวกระเพราหมูทอด", "description": "ข้าวกระเพราหมูทอดกรอบ เสิร์ฟพร้อมไข่ดาว", "image": "https://th.bing.com/th/id/OIP.lEPQTRpTFNxNgQIYk023EgHaFj?rs=1&pid=ImgDetMain", "url": "https://www.wongnai.com/businesses?q=ข้าวกระเพราหมูทอด&cregion=1364", "categories": ["เผ็ด", "อาหารจานเดียว", "ผัด"] },
+    { "name": "ข้าวผัดปู", "description": "ข้าวผัดปูรสชาติหวานจากปูสด เสิร์ฟพร้อมไข่และผัก", "image": "https://th.bing.com/th/id/OIP.b2c5AmJq3IU4ltQBlO8cvgHaE8?rs=1&pid=ImgDetMain", "url": "https://www.wongnai.com/businesses?q=ข้าวผัดปู&cregion=1364", "categories": ["หวาน", "อาหารจานเดียว", "ผัด"] },
+    { "name": "ยำมะม่วง", "description": "ยำมะม่วงสับรสชาติเปรี้ยวเผ็ด เสิร์ฟพร้อมกุ้งแห้งหรือเนื้อหมู", "image": "https://th.bing.com/th/id/OIP.Z1Vc2yQcHJIIoGXvCtilMAHaEc?rs=1&pid=ImgDetMain", "url": "https://www.wongnai.com/businesses?q=ยำมะม่วง&cregion=1364", "categories": ["เผ็ด", "อาหารจานเดียว", "ยำ"] },
+    { "name": "ยำทะเล", "description": "ยำทะเลสด รสชาติเผ็ดร้อนและเปรี้ยว", "image": "https://th.bing.com/th/id/OIP.d72s2F82ehQhbkJWuYuOHAHaFj?rs=1&pid=ImgDetMain", "url": "https://www.wongnai.com/businesses?q=ยำทะเล&cregion=1364", "categories": ["เผ็ด", "อาหารจานเดียว", "ยำ"] },
+    { "name": "ยำวุ้นเส้น", "description": "ยำวุ้นเส้นรสชาติเผ็ด เปรี้ยว มีถั่วลิสงและกุ้ง", "image": "https://th.bing.com/th/id/OIP.etsWrZpGxjlgezELNXHjVgHaE5?rs=1&pid=ImgDetMain", "url": "https://www.wongnai.com/businesses?q=ยำวุ้นเส้น&cregion=1364", "categories": ["เผ็ด", "อาหารจานเดียว", "เส้น", "ยำ"] },
+    { name: "ยำหมูยอ", "description": "หมูยอผสมผักในน้ำยำรสจัดจ้าน", "categories": ["เผ็ด", "กับข้าว", "ยำ"], image: "https://th.bing.com/th/id/OIP.5qUH9SASEd-iT_6mw8QgHgHaE1?w=263&h=180&c=7&r=0&o=5&dpr=1.1&pid=1.7", url: "https://www.wongnai.com/businesses?q=ยำหมูยอ&cregion=1364" },
+    { "name": "ยำเนื้อวัว", "description": "ยำเนื้อวัวสด ทานคู่กับผักสดและน้ำจิ้ม", "image": "https://img.wongnai.com/p/1920x0/2023/08/13/563a8b2c6c38472eb9536b997b418010.jpg", "url": "https://www.wongnai.com/businesses?q=ยำเนื้อวัว&cregion=1364", "categories": ["เผ็ด", "อาหารจานเดียว", "ยำ"] },
+    { "name": "ยำปลาแซลมอน", "description": "ยำปลาแซลมอนสด รสชาติเผ็ดแซ่บ", "image": "https://th.bing.com/th/id/OIP.jRSoUfDodth49vWdbyLoNAHaEK?rs=1&pid=ImgDetMain", "url": "https://www.wongnai.com/businesses?q=ยำปลาแซลมอน&cregion=1364", "categories": ["เผ็ด", "อาหารจานเดียว"] },
+    { "name": "ยำไข่ต้ม", "description": "ยำไข่ต้มรสชาติเผ็ดและเปรี้ยว พร้อมผักสด", "image": "https://th.bing.com/th/id/OIP.lzaxnJiOwdnIFaorvtnEoQHaEK?rs=1&pid=ImgDetMain", "url": "https://www.wongnai.com/businesses?q=ยำไข่ต้ม&cregion=1364", "categories": ["เผ็ด", "อาหารจานเดียว", "ยำ"] },
+    { "name": "ยำกุ้งสด", "description": "ยำกุ้งสดที่มีรสชาติเปรี้ยวหวานจากมะนาวและน้ำปลา", "image": "https://th.bing.com/th/id/OIP.n5YqhisAtsDvTcxnxI20WAHaHa?rs=1&pid=ImgDetMain", "url": "https://www.wongnai.com/businesses?q=ยำกุ้งสด&cregion=1364", "categories": ["เผ็ด", "อาหารจานเดียว", "ยำ"] },
+    { "name": "ปาท่องโก๋", "description": "ขนมทอดกรอบที่รับประทานกับนมข้นหวานหรือน้ำเต้าหู้", "image": "https://th.bing.com/th/id/OIP.PHPpr3t6PennMq2VFInpJQHaFj?rs=1&pid=ImgDetMain", "url": "https://www.wongnai.com/businesses?q=ปาท่องโก๋&cregion=1364", "categories": ["หวาน", "ขนม"] },
+    { "name": "ขนมครก", "description": "ขนมครกหวานมัน มีเนื้อแป้งที่กรอบนอกนุ่มใน", "image": "https://img.wongnai.com/p/1920x0/2024/10/14/01977158877549ea865f1762574c6732.jpg", "url": "https://www.wongnai.com/restaurants/2979017jv-ขนมครกชาววัง-ศาลากาแฟ?_st=cD0wO2I9Mjk3OTAxNzthZD1mYWxzZTt0PTE3MzQ2MTgzMzcxNDA7cmk9MVg3YkFPaHpIWTZpWThXTTNTTzVFSUdFUnF2TzB1O2k9MVg3MGRpVFptZDVXb2FhNXZTWFBxSXA1T3ZlaGU1O3dyZWY9c3I7", "categories": ["หวาน", "ขนม"] },
+    { "name": "ขนมเทียนแก้ว", "description": "ขนมเทียนแก้ว เสิร์ฟเป็นของหวานทานยามว่าง", "image": "https://img.wongnai.com/p/1920x0/2017/05/21/78c90c5881ac4e4e8e31914f016ae36e.jpg", "url": "ขนมจีบ", "categories": ["หวาน", "ขนม"] },
+    { "name": "ขนมจีบ", "description": "ขนมจีบไส้หมู หรือกุ้ง เสิร์ฟกับน้ำจิ้ม", "image": "https://th.bing.com/th/id/OIP.nMtTDlz96aeYxB47fQtZigHaIG?rs=1&pid=ImgDetMain", "url": "https://www.wongnai.com/businesses?q=ขนมจีบ&cregion=1364", "categories": ["หวาน", "ขนม"] },
+    { "name": "เต้าฮวยชากังราว", "description": "เต้าฮวยชื่อดังในกำแพง", "image": "https://th.bing.com/th/id/OIP.NU6krMpZnLAa7bASJcK5OgHaF6?rs=1&pid=ImgDetMain", "url": "https://www.wongnai.com/businesses?q=เต้าฮวยชากังราว&cregion=1364", "categories": ["หวาน", "ขนม"] },
+    { "name": "ขนมปังมะพร้าว", "description": "ขนมปังมะพร้าว รสชาติหวานเนื้อมะพร้าวมันๆ", "image": "https://img.wongnai.com/p/1920x0/2017/07/09/3fb18409699847b8a668e1381b5d6261.jpg", "url": "https://www.wongnai.com/businesses?q=ขนมปังมะพร้าว&cregion=1364", "categories": ["หวาน", "ขนม"] },
+    { "name": "ขนมบ้าบิ่น", "description": "ขนมบ้าบิ่นที่มีรสชาติหวานและมีเนื้อหนึบ", "image": "https://static.cdntap.com/tap-assets-prod/wp-content/uploads/sites/25/2022/05/thai-coconut-pancake-lead.jpg", "url": "https://www.wongnai.com/businesses?q=ขนมบ้าบิ่น&cregion=1364", "categories": ["ขนม", "หวาน"] }
+    ];
+
+
+
+    function displayFood(filteredFoods) {
+      const foodList = document.getElementById("food-list");
+      foodList.innerHTML = "";
+      filteredFoods.forEach(food => {
+        const li = document.createElement("li");
+
+        const a = document.createElement("a");
+        a.href = food.url;
+        a.target = "_blank";
+
+        const img = document.createElement("img");
+        img.src = food.image;
+        img.alt = food.name;
+
+        const foodName = document.createElement("h4");
+        foodName.textContent = food.name;
+
+        const foodDescription = document.createElement("p");
+        foodDescription.textContent = food.description;
+
+        a.appendChild(img);
+        a.appendChild(foodName);
+        a.appendChild(foodDescription);
+
+        li.appendChild(a);
+        foodList.appendChild(li);
+      });
+    }
+
+    function filterFood() {
+      const searchTerm = document.getElementById("search-bar").value.toLowerCase();
+      
+      const selectedCategories = [
+        { id: "filter-spicy", label: "เผ็ด" },
+        { id: "filter-sweet", label: "หวาน" },
+        { id: "filter-sour", label: "เปรี้ยว" },
+        { id: "filter-salty", label: "เค็ม" },
+        { id: "filter-fishy", label: "คาว" },
+        { id: "filter-single", label: "อาหารจานเดียว" },
+        { id: "filter-side-dish", label: "กับข้าว" },
+	{ id: "filter-snack", label: "ขนม" },
+	{ id: "filter-noodle", label: "เส้น" },
+        { id: "filter-stir", label: "ผัด" },
+	{ id: "filter-mix", label: "ยำ" }
+      ];
+
+      const activeFilters = selectedCategories.filter(cat => document.getElementById(cat.id).checked).map(cat => cat.label);
+      
+      const filteredFoods = foods.filter(food => {
+        const matchesSearchTerm = food.name.toLowerCase().includes(searchTerm) || food.description.toLowerCase().includes(searchTerm);
+        const matchesCategory = activeFilters.every(filter => food.categories.includes(filter));
+
+        return matchesSearchTerm && (activeFilters.length === 0 || matchesCategory);
+      });
+
+      displayFood(filteredFoods);
+    }
+
+    window.onload = function() {
+      displayFood(foods);
+      document.querySelectorAll('#filters input[type="checkbox"]').forEach(input => {
+        input.addEventListener('change', filterFood);
+      });
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>เว็บหิวข้าวจัง กินอะไรดีกำแพงเพชร</h1>
+    <h2>ค้นหาหรือกรองอาหารที่คุณต้องการ!</h2>
+    <input type="text" id="search-bar" placeholder="ค้นหาชื่ออาหาร..." oninput="filterFood()">
+
+    <div id="filters">
+      <label><input type="checkbox" id="filter-spicy"> เผ็ด</label>
+      <label><input type="checkbox" id="filter-sweet"> หวาน</label>
+      <label><input type="checkbox" id="filter-sour"> เปรี้ยว</label>
+      <label><input type="checkbox" id="filter-salty"> เค็ม</label>
+      <label><input type="checkbox" id="filter-fishy"> คาว</label>
+      <label><input type="checkbox" id="filter-single"> อาหารจานเดียว</label>
+      <label><input type="checkbox" id="filter-side-dish"> กับข้าว</label>
+      <label><input type="checkbox" id="filter-snack"> ขนม</label>
+      <label><input type="checkbox" id="filter-noodle"> เส้น</label>
+      <label><input type="checkbox" id="filter-stir"> ผัด</label>
+      <label><input type="checkbox" id="filter-mix">  ยำ</label>
+    </div>
+
+    <ul id="food-list"></ul>
+  </div>
+</body>
+</html>
